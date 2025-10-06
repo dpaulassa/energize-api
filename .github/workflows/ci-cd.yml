@@ -27,24 +27,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Passo Corrigido: Instala o Heroku CLI
       - name: Set up Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
-
-      # Passo Corrigido: Login no Heroku (usando uma Action oficial)
+      
+      # LINHA CORRIGIDA ABAIXO
       - name: Log in to Heroku
-        uses: heroku/login@v1
+        uses: heroku/actions/login@v1
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
 
-      # Passo Corrigido: Login no Registro de Contêineres do Heroku
       - name: Log in to Heroku Container Registry
         run: heroku container:login
 
-      # Build e Push da imagem para o Heroku
       - name: Build and push to Heroku
         run: heroku container:push web --app energize-api-fiap-maysa
 
-      # Release da aplicação no Heroku
       - name: Release to Heroku
         run: heroku container:release web --app energize-api-fiap-maysa
