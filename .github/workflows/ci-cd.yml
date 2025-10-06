@@ -21,27 +21,30 @@ jobs:
         run: ./mvnw clean install
 
   deploy:
-    # Este job só roda se o job 'build-and-test' for bem-sucedido
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Passo novo: Login no Heroku
+      # Passo Corrigido: Instala o Heroku CLI
+      - name: Set up Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      # Passo Corrigido: Login no Heroku (usando uma Action oficial)
       - name: Log in to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        uses: heroku/login@v1
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+
+      # Passo Corrigido: Login no Registro de Contêineres do Heroku
+      - name: Log in to Heroku Container Registry
         run: heroku container:login
 
-      # Passo novo: Build e Push da imagem para o Heroku
+      # Build e Push da imagem para o Heroku
       - name: Build and push to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:push web --app energize-api-fiap-maysa
 
-      # Passo novo: Release da aplicação no Heroku
+      # Release da aplicação no Heroku
       - name: Release to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:release web --app energize-api-fiap-maysa
