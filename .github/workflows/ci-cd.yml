@@ -29,18 +29,18 @@ jobs:
 
       - name: Set up Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
-      
-      # LINHA CORRIGIDA ABAIXO
-      - name: Log in to Heroku
-        uses: heroku/actions/login@v1
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Log in to Heroku Container Registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
 
       - name: Build and push to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:push web --app energize-api-fiap-maysa
 
       - name: Release to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:release web --app energize-api-fiap-maysa
