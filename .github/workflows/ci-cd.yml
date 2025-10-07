@@ -44,5 +44,5 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku config:set SPRING_DATA_MONGODB_URI=${{ secrets.MONGODB_URI }} --app energize-api-fiap-maysa
+          heroku config:set SPRING_DATA_MONGODB_URI="${{ secrets.MONGODB_URI }}" --app energize-api-fiap-maysa
           heroku container:release web --app energize-api-fiap-maysa
