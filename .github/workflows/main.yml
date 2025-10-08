@@ -1,0 +1,47 @@
+# Nome do nosso pipeline
+name: CI/CD Pipeline - Deploy Energize API
+
+# Gatilho: Rodar automaticamente em push para a branch 'main'
+on:
+  push:
+    branches: [ main ]
+
+# Jobs: As tarefas que o pipeline vai executar
+jobs:
+  build-and-push:
+    name: Build e Push da Imagem Docker
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build e Push da Imagem para o Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: SEU-DOCKER-ID-AQUI/energize-api:latest
+
+  deploy-to-staging:
+    name: Deploy no Ambiente de Staging
+    needs: build-and-push # Só roda depois que o job 'build-and-push' for sucesso
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conectar na VM e fazer o Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_SSH_HOST }}
+          username: ${{ secrets.AZURE_SSH_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          script: |
+            cd ~/projects/energize-api
+            docker pull maysadpaulas/energize-api:latest
+            sudo docker compose -f docker-compose.staging.yml up -d
