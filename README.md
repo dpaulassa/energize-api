@@ -38,7 +38,7 @@ Para executar este projeto em seu ambiente local, certifique-se de ter o Docker 
 4.  **Acesse a aplicação:**
     A aplicação estará disponível em `http://localhost:8080/api/users`.
 
-## ⚙️ Pipeline de CI/CD
+## ⚙️ Pipeline CI/CD
 
 O pipeline de automação foi construído utilizando **GitHub Actions**. Ele é definido no arquivo `.github/workflows/main.yml` e é acionado a cada `push` na branch `main`.
 
@@ -56,24 +56,11 @@ O pipeline é dividido em duas etapas (jobs) principais:
     * Uma vez conectado, ele executa um script que:
         * Navega até a pasta do projeto.
         * Baixa (`pull`) a imagem mais recente que acabamos de enviar para o Docker Hub.
-        * Reinicia os containers (`docker compose up -d`), forçando o Docker a usar a nova imagem baixada, atualizando a aplicação em staging sem downtime perceptível.
+        * Reinicia os containers (`docker compose up -d`), forçando o Docker a usar a nova imagem baixada, atualizando a aplicação em staging.
 
 ## 🐳 Containerização
 
-A aplicação foi totalmente containerizada para garantir portabilidade e consistência entre os ambientes.
-
-### Dockerfile
-
-Foi utilizado um `Dockerfile` multi-stage para otimização da imagem final:
-* **Estágio 1 (Builder):** Utiliza uma imagem completa do Maven e Java para compilar o projeto e gerar o arquivo `.jar`.
-* **Estágio 2 (Final):** Inicia a partir de uma imagem Java Runtime (JRE) muito mais leve e copia apenas o `.jar` compilado do estágio anterior. Isso resulta em uma imagem final menor, mais segura e otimizada para produção, sem incluir as ferramentas de build.
-
-### Docker Compose
-
-O `docker-compose.yml` orquestra os dois serviços principais da aplicação:
-* **`api`**: O container da nossa aplicação Java/Spring Boot.
-* **`mongo`**: O container do banco de dados MongoDB.
-* **Recursos:** Foram utilizados `networks` para permitir a comunicação segura entre a API e o banco de dados, `volumes` para garantir a persistência dos dados do MongoDB mesmo que o container seja recriado, e `env_file` para carregar as variáveis de ambiente.
+A aplicação foi totalmente containerizada para garantir portabilidade e consistência entre os ambientes. O `Dockerfile` utiliza uma estratégia de `multi-stage build` para otimização, resultando em uma imagem final menor e mais segura. O `docker-compose.yml` orquestra os serviços da aplicação e do banco de dados, utilizando `networks` para comunicação interna, `volumes` para persistência de dados e `env_file` para carregar as configurações de ambiente.
 
 ## 🖼️ Prints do Funcionamento
 
@@ -81,7 +68,7 @@ O `docker-compose.yml` orquestra os dois serviços principais da aplicação:
 
 ![Pipeline executando com sucesso](./docs/prints/pipeline-sucesso.png)
 
-**Ambiente de Staging funcionando:**
+**Ambiente de Staging funcionando (via IP e porta 8081):**
 
 ![API rodando no ambiente de staging](./docs/prints/api-staging.png)
 
