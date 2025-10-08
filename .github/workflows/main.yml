@@ -1,12 +1,12 @@
-# Nome do nosso pipeline
+
 name: CI/CD Pipeline - Deploy Energize API
 
-# Gatilho: Rodar automaticamente em push para a branch 'main'
+
 on:
   push:
     branches: [ main ]
 
-# Jobs: As tarefas que o pipeline vai executar
+
 jobs:
   build-and-push:
     name: Build e Push da Imagem Docker
@@ -31,7 +31,7 @@ jobs:
 
   deploy-to-staging:
     name: Deploy no Ambiente de Staging
-    needs: build-and-push # Só roda depois que o job 'build-and-push' for sucesso
+    needs: build-and-push 
     runs-on: ubuntu-latest
 
     steps:
