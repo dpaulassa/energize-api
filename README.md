@@ -62,6 +62,12 @@ O pipeline é dividido em duas etapas (jobs) principais:
 
 A aplicação foi totalmente containerizada para garantir portabilidade e consistência entre os ambientes. O `Dockerfile` utiliza uma estratégia de `multi-stage build` para otimização, resultando em uma imagem final menor e mais segura. O `docker-compose.yml` orquestra os serviços da aplicação e do banco de dados, utilizando `networks` para comunicação interna, `volumes` para persistência de dados e `env_file` para carregar as configurações de ambiente.
 
+> **⚠️ Nota de Disponibilidade do Ambiente**
+>
+> Para otimização de custos na nuvem, a Máquina Virtual que hospeda este ambiente de demonstração está configurada com uma **política de desligamento automático todos os dias às 20:00 (horário de Brasília)**.
+>
+> O ambiente estará disponível para acesso online diariamente, das **08:00 às 20:00**. Caso os links abaixo estejam indisponíveis fora deste horário, a VM pode ser reativada mediante solicitação.
+
 ## 🖼️ Prints do Funcionamento
 
 **Pipeline executando com sucesso no GitHub Actions:**
