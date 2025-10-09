@@ -68,6 +68,11 @@ A aplicação foi totalmente containerizada para garantir portabilidade e consis
 >
 > O ambiente estará disponível para acesso online diariamente, das **08:00 às 20:00**. Caso os links abaixo estejam indisponíveis fora deste horário, a VM pode ser reativada mediante solicitação.
 
+### Links para o Ambiente de Staging
+
+* **Listar todos os usuários (GET):** [http://4.154.204.134:8081/api/users](http://4.154.204.134:8081/api/users)
+* **Criar um novo usuário (POST):** `http://4.154.204.134:8081/api/users` (Requer o uso de uma ferramenta como o Postman)
+
 ## 🖼️ Prints do Funcionamento
 
 **Pipeline executando com sucesso no GitHub Actions:**
